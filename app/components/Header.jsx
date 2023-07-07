@@ -10,10 +10,10 @@ const Header = () => {
             <Link href='/'>Home</Link>
           </li>
           <li className='text-sm'>
-            <Link href='/protected/server'>Protected (server)</Link>
+            <Link href='/dashboard'>Dashboard</Link>
           </li>
           <li className='text-sm'>
-            <Link href='/protected/client'>Protected (client)</Link>
+            <Link href='/pricing'>Pricing</Link>
           </li>
           <li>
             <SignInButton />
