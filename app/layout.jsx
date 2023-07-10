@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
       <body className='flex h-full flex-col'>
         <Provider>
           <Header />
-          <main className='grow'>{children}</main>
+          <main className='grow px-2 sm:px-0'>{children}</main>
           <Footer />
         </Provider>
       </body>
