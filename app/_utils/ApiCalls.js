@@ -7,7 +7,7 @@ export async function fetchYoutubeSentiment(videoUrl, apiUrl) {
     // Create payload
     const requestBody = {
         video_id: video_id,
-        num_comments: 10,
+        num_comments: 30,
         order: "relevance",
         language: "french"
     };

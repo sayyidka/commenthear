@@ -35,7 +35,7 @@ function AnalysePage() {
                         value={videoUrl}
                         onChange={handleInputChange}
                         placeholder="Paste a Youtube video URL here..."
-                        className="input input-bordered input-accent w-full sm:w-96"
+                        className="input input-bordered w-full sm:w-96"
                     />
                     <button onClick={() => getAnalyse()} className="btn btn-primary ml-2">Analyse</button>
                 </div>
