@@ -7,7 +7,7 @@ function HalfSizeCard({ title, content }) {
             <div className="w-full mb-4 sm:mb-0 sm:w-1/2 flex flex-col card bg-secondary shadow-xl h-48">
                 <div className="card-body">
                     <h2 className="card-title">{title}</h2>
-                    <p>{content * 100} %</p>
+                    <p>{content} %</p>
                 </div>
             </div>
         )

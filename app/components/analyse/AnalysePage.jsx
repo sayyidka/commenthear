@@ -24,7 +24,6 @@ function AnalysePage() {
         setData(ApiData);
     }
 
-
     return (
         <section className='py-18'>
             <div className='container mx-auto flex flex-col items-center max-w-3xl mt-8'>

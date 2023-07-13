@@ -22,6 +22,7 @@ const client = DynamoDBDocument.from(new DynamoDB(config), {
 })
 
 export const authOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -39,6 +40,11 @@ export const authOptions = {
       from: process.env.EMAIL_FROM
     }),
   ],
+  callbacks: {
+    async session({ session }) {
+      return session;
+    }
+  },
   pages: {
     signIn: '/signin'
   },

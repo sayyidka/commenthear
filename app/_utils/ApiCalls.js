@@ -1,13 +1,25 @@
+import { cookies } from 'next/headers'
 import { extractVideoId } from "./helpers";
+
 
 export async function fetchYoutubeSentiment(videoUrl, apiUrl) {
     // Extract video_id
     const video_id = await extractVideoId(videoUrl)
 
+    // Get sessionToken
+    const cookieStore = cookies()
+    const sessionToken = cookieStore.get('next-auth.session-token')?.value
+
+    // Set headers
+    const headers = {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${sessionToken}`
+    }
+
     // Create payload
     const requestBody = {
         video_id: video_id,
-        num_comments: 30,
+        num_comments: 3,
         order: "relevance",
         language: "french"
     };
@@ -16,9 +28,7 @@ export async function fetchYoutubeSentiment(videoUrl, apiUrl) {
     try {
         const response = await fetch(apiUrl, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: headers,
             body: JSON.stringify(requestBody)
         });
 

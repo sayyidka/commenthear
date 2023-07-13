@@ -1,8 +1,16 @@
-// File: pages/api/youtube.js
+import { authOptions } from "../auth/[...nextauth]/route"
+import { getServerSession } from "next-auth/next"
 import { NextResponse } from 'next/server'
 import { fetchYoutubeSentiment } from "@/app/_utils/ApiCalls";
 
 export async function POST(req, res) {
+    const session = await getServerSession(authOptions)
+
+    if (!session) {
+        NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+        return;
+    }
+
     // We'll only accept POST requests
     if (req.method !== 'POST') {
         return NextResponse.json({ message: 'Method not allowed' }, { status: 405 });
@@ -27,4 +35,6 @@ export async function POST(req, res) {
         // Respond with an error status and message
         return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
     }
+
+
 }
