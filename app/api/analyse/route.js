@@ -1,7 +1,7 @@
 import { authOptions } from "../auth/[...nextauth]/route"
 import { getServerSession } from "next-auth/next"
 import { NextResponse } from 'next/server'
-import { fetchYoutubeSentiment } from "@/app/_utils/ApiCalls";
+import { fetchMediaSentiment } from "@/app/api/analyse/MediaSentiment";
 
 export async function POST(req, res) {
     const session = await getServerSession(authOptions)
@@ -11,30 +11,27 @@ export async function POST(req, res) {
         return;
     }
 
-    // We'll only accept POST requests
+    // Only accept POST requests
     if (req.method !== 'POST') {
         return NextResponse.json({ message: 'Method not allowed' }, { status: 405 });
     }
 
     // Check if videoUrl is provided
     const body = await req.json();
-    const { videoUrl } = body;
+    const { videoUrl, language, platform } = body;
     if (!videoUrl) {
         return NextResponse.json({ message: 'Missing videoUrl parameter' }, { status: 400 });
     }
 
+    // Get sentiment analysis
     try {
-        const apiUrl = `${process.env.API_URL}/sentiment`;
-        const data = await fetchYoutubeSentiment(videoUrl, apiUrl);
+        const data = await fetchMediaSentiment(videoUrl, language, platform);
 
-        // Send the sentiment analysis data as a response
         return NextResponse.json(data, { status: 200 });
     } catch (error) {
         console.error('Error in /api/analyse:', error);
 
-        // Respond with an error status and message
+        // Error status and message
         return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
     }
-
-
 }

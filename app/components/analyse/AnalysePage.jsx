@@ -7,7 +7,9 @@ import CardAnalyse from './CardAnalyse'
 
 function AnalysePage() {
     const [videoUrl, setVideoUrl] = useState('')
-    const [data, setData] = useState(null)
+    const [videoInfo, setVideoInfo] = useState(null)
+    const [sentimentData, setSentimentData] = useState(null)
+
     const handleInputChange = (e) => {
         setVideoUrl(e.target.value);
     };
@@ -18,10 +20,15 @@ function AnalysePage() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ videoUrl }),
+            body: JSON.stringify({
+                videoUrl,
+                platform: "youtube",
+                language: "french"
+            }),
         });
         const ApiData = await response.json();
-        setData(ApiData);
+        setVideoInfo(ApiData.videoInfo)
+        setSentimentData(ApiData.sentiment?.content[0])
     }
 
     return (
@@ -40,23 +47,22 @@ function AnalysePage() {
                 </div>
 
 
-                {data &&
+                {sentimentData &&
                     <div className='flex flex-col items-stretch'>
-                        <VideoCard videoInfos={data.videoInfos} />
-                        <CardAnalyse title="Overall Sentiment" content={data["sentimentAnalysis"]["Overall Sentiment"]} />
+                        <VideoCard videoInfos={videoInfo} />
+                        <CardAnalyse title="Overall Sentiment" content={sentimentData["Overall Sentiment"]} />
 
                         {/* Half-size cards */}
                         <div className='flew flex-wrap sm:flex sm:flex-nowrap justify-center mb-4 sm:mb-8 space-x-0 sm:space-x-4'>
-                            <HalfSizeCard title="Sentiment Score" content={data["sentimentAnalysis"]["Sentiment Score"]} />
-                            <HalfSizeCard title="Keyword Analysis" content={data["sentimentAnalysis"]["Keyword Analysis"]} />
+                            <HalfSizeCard title="Sentiment Score" content={sentimentData["Sentiment Score"]} />
+                            <HalfSizeCard title="Keyword Analysis" content={sentimentData["Keyword Analysis"]} />
                         </div>
 
                         {/* Viewer preferences */}
-                        <CardAnalyse title="Viewer Preferences" content={data["sentimentAnalysis"]["Viewer Preferences"]} />
-                        <CardAnalyse title="Areas for Improvement" content={data["sentimentAnalysis"]["Areas for Improvement"]} />
+                        <CardAnalyse title="Viewer Preferences" content={sentimentData["Viewer Preferences"]} />
+                        <CardAnalyse title="Areas for Improvement" content={sentimentData["Areas for Improvement"]} />
                     </div>
                 }
-
             </div>
         </section>
     )
